@@ -1,0 +1,5 @@
+java_listen_ip: "0.0.0.0"
+java_listen_port: 25565
+
+bedrock_target_ip: "0.0.0:00"
+bedrock_target_port: 0
