@@ -11,11 +11,11 @@ public class ProxyMain {
 
             ServerSocket serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(listenIp, listenPort));
-            System.out.println("Proxy prêt sur " + listenIp + ":" + listenPort);
+            System.out.println("Proxy pret sur " + listenIp + ":" + listenPort);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connecté : " + clientSocket.getInetAddress());
+                System.out.println("Client connecte : " + clientSocket.getInetAddress());
                 new Thread(() -> handleClient(clientSocket)).start();
             }
 
@@ -36,14 +36,14 @@ public class ProxyMain {
                 System.out.println("Paquet inattendu (handshake) ID=" + packetId);
                 return;
             }
-            // On lit le handshake (on peut stocker protocolVersion, address, port…)
+            // On lit le handshake (on peut stocker protocolVersion, address, port)
             readVarInt(in);           // protocolVersion
             String host = readString(in);
             in.readUnsignedShort();   // port
             int nextState = readVarInt(in);
 
             if (nextState == 1) {
-                // STATUS (ping MOTD) -> on répond et ferme
+                // STATUS (ping MOTD) -> on repond et ferme
                 handleStatus(in, out);
                 return;
             } else if (nextState == 2) {
@@ -55,14 +55,14 @@ public class ProxyMain {
                     return;
                 }
                 String playerName = readString(in);
-                System.out.println("Début LOGIN pour joueur : " + playerName);
+                System.out.println("Debut LOGIN pour joueur : " + playerName);
 
                 // Connexion vers Bedrock
                 Map<String, String> cfg = loadConfig("config.yml");
                 String bedIp   = cfg.getOrDefault("bedrock_target_ip", "127.0.0.1");
                 int    bedPort = Integer.parseInt(cfg.getOrDefault("bedrock_target_port", "19132"));
                 Socket bedrockSocket = new Socket(bedIp, bedPort);
-                System.out.println("? Connecté à Bedrock " + bedIp + ":" + bedPort);
+                System.out.println("? Connecte a Bedrock " + bedIp + ":" + bedPort);
 
                 // On lance le tunnel bidirectionnel avec fermeture automatique
                 new Thread(new ProxyBridge(socket, bedrockSocket)).start();
@@ -75,7 +75,7 @@ public class ProxyMain {
     }
 
     private static void handleStatus(DataInputStream in, DataOutputStream out) throws IOException {
-        // on lit la requête status
+        // on lit la requete status
         readVarInt(in); // length
         readVarInt(in); // packetId (0x00)
         // on renvoie un MOTD statique
@@ -94,10 +94,10 @@ public class ProxyMain {
         DataOutputStream pout = new DataOutputStream(pong);
         pout.writeLong(ping);
         sendPacket(out, 0x01, pong.toByteArray());
-        System.out.println("Status traité, fermeture.");
+        System.out.println("Status traite, fermeture.");
     }
 
-    // --- Lecture/écriture VarInt & String & Packet ---
+    // --- Lecture/ecriture VarInt & String & Packet ---
     private static int readVarInt(DataInputStream in) throws IOException {
         int numRead = 0, result = 0;
         byte read;
