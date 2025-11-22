@@ -24,15 +24,15 @@ public class ProxyBridge implements Runnable {
                 }
                 int packetId = readVarInt(in);
 
-                System.out.println("Paquet Java reçu ID=0x" + Integer.toHexString(packetId));
+                System.out.println("Paquet Java revu ID=0x" + Integer.toHexString(packetId));
 
                 // Lire le reste du paquet
                 byte[] payload = new byte[packetLength - getVarIntSize(packetId)];
                 in.readFully(payload);
 
-                // TODO: Décoder ici un paquet spécifique selon l'ID
+                // TODO: Decoder ici un paquet specifique selon l'ID
 
-                // Pour l’instant, on transmet le paquet brut au serveur Bedrock
+                // Pour l instant, on transmet le paquet brut au serveur Bedrock
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 DataOutputStream dos = new DataOutputStream(baos);
                 writeVarInt(dos, packetId);
@@ -45,11 +45,11 @@ public class ProxyBridge implements Runnable {
             }
 
         } catch (IOException e) {
-            // Socket fermé ou erreur
+            // Socket ferme ou erreur
         } finally {
             try { inSocket.close(); } catch (IOException ignored) {}
             try { outSocket.close(); } catch (IOException ignored) {}
-            System.out.println("Session fermée entre "
+            System.out.println("Session fermee entre "
                 + inSocket.getInetAddress() + " ? "
                 + outSocket.getInetAddress());
         }
