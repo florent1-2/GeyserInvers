@@ -1,7 +1,7 @@
 @echo off
 REM Compile les fichiers Java (ProxyMain.java et ProxyBridge.java)
 echo Compilation des fichiers Java...
-javac ProxyMain.java ProxyBridge.java
+javac -encoding UTF-8 ProxyMain.java ProxyBridge.java
 if errorlevel 1 (
     echo Erreur lors de la compilation. Verifie que javac est dans ton PATH.
     pause
